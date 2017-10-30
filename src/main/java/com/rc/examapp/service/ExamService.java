@@ -1,7 +1,6 @@
 package com.rc.examapp.service;
 
 import com.rc.examapp.model.Exam;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

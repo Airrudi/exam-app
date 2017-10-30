@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.Set;
 
@@ -33,11 +31,12 @@ public class Question {
 	@Column(name = "questionType") //TODO: What would have been the default name?
 	private QuestionType type;
 
-	@ManyToMany(mappedBy = "questions") // TODO: How does this work? Exam must be the owner, mapped by correct?
-	Set<Exam> exams; // TODO: Or use a list?
-
 	@OneToMany
+	@JoinColumn(name = "question_id")
 	Set<Answer> answers;
+
+	//TODO: Do you want to know to which exams each question belongs? How to incorporate without creating endless loop?
+
 
 	public Question() {}
 
@@ -70,11 +69,11 @@ public class Question {
 		this.type = type;
 	}
 
-	public Set<Exam> getExams() {
-		return exams;
+	public Set<Answer> getAnswers() {
+		return answers;
 	}
 
-	public void setExams(Set<Exam> exams) {
-		this.exams = exams;
+	public void setAnswers(Set<Answer> answers) {
+		this.answers = answers;
 	}
 }
