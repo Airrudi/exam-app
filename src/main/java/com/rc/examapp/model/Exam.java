@@ -1,20 +1,39 @@
 package com.rc.examapp.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by R.E.M. Claassen on 27-10-2017.
  */
+
+@Entity
 public class Exam {
 
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private long id;
+
 	private String title;
 	private String owner;
 	private LocalDateTime createdOn;
 	private int passingPercentage;
 
-	private List<Question> questions; //TODO Q: Why not use Set for unique exams?
+	@ManyToMany
+	@JoinTable(
+			name="exam_question",
+			joinColumns={@JoinColumn(name="exam_id")},
+			inverseJoinColumns={@JoinColumn(name="question_id")}
+	)
+	private Set<Question> questions; //TODO Q: Set or List for unique exams?
 
 	public Exam() {}
 

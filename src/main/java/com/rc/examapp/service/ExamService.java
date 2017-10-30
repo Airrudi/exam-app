@@ -15,5 +15,7 @@ public interface ExamService {
 	Exam getById(long id);
 	List<Exam> getAll();
 
+	Exam save(Exam exam);
+
 	// List<Exam> getCreatedByUser(User user);
 }

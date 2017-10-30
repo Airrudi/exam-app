@@ -13,4 +13,6 @@ public interface ExamDao {
 
 	List<Exam> getAll();
 	Exam getById(long id);
+	void save(Exam exam);
+
 }

@@ -6,6 +6,7 @@ import com.rc.examapp.service.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -25,5 +26,14 @@ public class ExamServiceImpl implements ExamService{
 	@Override
 	public List<Exam> getAll() {
 		return examDao.getAll();
+	}
+
+	@Override
+	@Transactional //TODO: Q: Is it required to make it transactional?
+	public Exam save(Exam exam) {
+		examDao.save(exam);
+
+		return examDao.getById(exam.getId());
+
 	}
 }
