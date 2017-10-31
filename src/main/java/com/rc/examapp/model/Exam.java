@@ -8,10 +8,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 /**
- * Created by R.E.M. Claassen on 27-10-2017.
+ * Exam class contains all basic info about an Exam, including a list of questions
+ * {@link Question} and {@link Answer} are created as separate classes
+ *
+ * @author R.E.M. Claassen
+ * @version 1.0
  */
 
 @Entity
@@ -32,7 +36,7 @@ public class Exam {
 			joinColumns={@JoinColumn(name="exam_id")},
 			inverseJoinColumns={@JoinColumn(name="question_id")}
 	)
-	private Set<Question> questions; //TODO Q: Set or List for unique exams?
+	private List<Question> questions; //TODO Q: Set or List for unique exams?
 
 	public Exam() {}
 
@@ -83,11 +87,11 @@ public class Exam {
 		this.passingPercentage = passingPercentage;
 	}
 
-	public Set<Question> getQuestions() {
+	public List<Question> getQuestions() {
 		return questions;
 	}
 
-	public void setQuestions(Set<Question> questions) {
+	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
 }

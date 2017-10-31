@@ -12,11 +12,19 @@ import javax.persistence.OneToMany;
 import java.util.Set;
 
 /**
- * Created by R.E.M. Claassen on 27-10-2017.
+ * Question class contains the text and a list of possible answers in case of multiple choice questions
+ * A question can be used in different {@link Exam exams}
+ *
+ * @author R.E.M. Claassen
+ * @version 1.0
  */
 @Entity
 public class Question {
 
+	/**
+	 * The QuestionType says something about the type of question, currently we have (open) questions and multiple choice.
+	 * Since it only exists for a question, the enum is created inside the Question class
+	 */
 	public enum QuestionType{
 		MULTIPLE, OPEN;
 	}

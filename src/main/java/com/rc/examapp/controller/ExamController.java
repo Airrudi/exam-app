@@ -26,13 +26,13 @@ public class ExamController {
 	public ExamService examService;
 
 
-	@RequestMapping("/exams/")
+	@RequestMapping(value = "/exams/", method = RequestMethod.GET)
 	public List<Exam> getExams() {
-
+		
 		return examService.getAll();
 	}
 
-	@RequestMapping("/exams/{examId}")
+	@RequestMapping(value = "/exams/{examId}", method = RequestMethod.GET)
 	public Exam getExam(@PathVariable("examId") long examId){
 
 		return examService.getById(examId);
