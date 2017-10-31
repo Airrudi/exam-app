@@ -1,13 +1,16 @@
-package com.rc.examapp.model;
+package com.rc.examapp.exam;
 
+import com.rc.examapp.core.BaseEntity;
+import com.rc.examapp.question.Answer;
+import com.rc.examapp.question.Question;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,40 +22,33 @@ import java.util.List;
  */
 
 @Entity
-public class Exam {
-
-	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private long id;
+public class Exam extends BaseEntity{
 
 	private String title;
 	private String owner;
 	private LocalDateTime createdOn;
 	private int passingPercentage;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(
 			name="exam_question",
 			joinColumns={@JoinColumn(name="exam_id")},
 			inverseJoinColumns={@JoinColumn(name="question_id")}
+
 	)
 	private List<Question> questions; //TODO Q: Set or List for unique exams?
 
-	public Exam() {}
+	public Exam() {
+		super();
+		this.questions = new ArrayList<>();
+	}
 
 	public Exam(String title, String owner, int passingPercentage) {
+		this();
 		this.title = title;
 		this.owner = owner;
 		this.passingPercentage = passingPercentage;
 		this.createdOn = LocalDateTime.now();
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public String getTitle() {
@@ -91,7 +87,8 @@ public class Exam {
 		return questions;
 	}
 
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
+	public void addQuestion(Question question) {
+		question.addExam(this);
+		this.questions.add(question);
 	}
 }

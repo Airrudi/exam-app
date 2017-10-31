@@ -1,14 +1,19 @@
-package com.rc.examapp.model;
+package com.rc.examapp.question;
 
+import com.rc.examapp.core.BaseEntity;
+import com.rc.examapp.exam.Exam;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,7 +24,7 @@ import java.util.Set;
  * @version 1.0
  */
 @Entity
-public class Question {
+public class Question extends BaseEntity {
 
 	/**
 	 * The QuestionType says something about the type of question, currently we have (open) questions and multiple choice.
@@ -29,36 +34,30 @@ public class Question {
 		MULTIPLE, OPEN;
 	}
 
-	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private long id;
-
 	private String text;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "questionType") //TODO: What would have been the default name?
 	private QuestionType type;
 
-	@OneToMany
-	@JoinColumn(name = "question_id")
-	Set<Answer> answers;
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+	private List<Answer> answers;
+
+	@ManyToMany
+	private List<Exam> exams;
 
 	//TODO: Do you want to know to which exams each question belongs? How to incorporate without creating endless loop?
 
-
-	public Question() {}
+	protected Question() {
+		super();
+		this.answers = new ArrayList<>();
+		this.exams = new ArrayList<>();
+	}
 
 	public Question(String text, QuestionType type) {
+		this();
 		this.text = text;
 		this.type = type;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public String getText() {
@@ -77,11 +76,20 @@ public class Question {
 		this.type = type;
 	}
 
-	public Set<Answer> getAnswers() {
+	public List<Answer> getAnswers() {
 		return answers;
 	}
 
-	public void setAnswers(Set<Answer> answers) {
-		this.answers = answers;
+	public void addAnswer(Answer answer){
+		answer.setQuestion(this);
+		this.answers.add(answer);
+	};
+
+	public List<Exam> getExams() {
+		return exams;
+	}
+
+	public void addExam(Exam exam) {
+		this.exams.add(exam);
 	}
 }
