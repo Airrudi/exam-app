@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
- * Created by R.E.M. Claassen on 31-10-2017.
+ * Created by RC on 31-10-2017.
  */
 
 @MappedSuperclass

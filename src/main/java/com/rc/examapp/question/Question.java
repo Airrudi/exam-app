@@ -1,5 +1,6 @@
 package com.rc.examapp.question;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rc.examapp.core.BaseEntity;
 import com.rc.examapp.exam.Exam;
 
@@ -8,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -20,7 +22,7 @@ import java.util.Set;
  * Question class contains the text and a list of possible answers in case of multiple choice questions
  * A question can be used in different {@link Exam exams}
  *
- * @author R.E.M. Claassen
+ * @author RC
  * @version 1.0
  */
 @Entity
@@ -40,12 +42,14 @@ public class Question extends BaseEntity {
 	@Column(name = "questionType") //TODO: What would have been the default name?
 	private QuestionType type;
 
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "question")
 	private List<Answer> answers;
 
-	@ManyToMany
+	@ManyToMany(mappedBy = "questions")
+	@JsonIgnore
 	private List<Exam> exams;
 
+	//TODO: JPA -> Relations ManyToMany etc.
 	//TODO: Do you want to know to which exams each question belongs? How to incorporate without creating endless loop?
 
 	protected Question() {
@@ -81,9 +85,10 @@ public class Question extends BaseEntity {
 	}
 
 	public void addAnswer(Answer answer){
-		answer.setQuestion(this);
 		this.answers.add(answer);
+		answer.setQuestion(this);
 	};
+
 
 	public List<Exam> getExams() {
 		return exams;
@@ -91,5 +96,6 @@ public class Question extends BaseEntity {
 
 	public void addExam(Exam exam) {
 		this.exams.add(exam);
+		exam.addQuestion(this);
 	}
 }

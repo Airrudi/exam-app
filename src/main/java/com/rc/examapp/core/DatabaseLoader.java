@@ -11,7 +11,11 @@ import org.springframework.stereotype.Component;
 import javax.management.Query;
 
 /**
- * Created by R.E.M. Claassen on 31-10-2017.
+ * Inspired by TeamTreeHouse's tutorial about creating a REST API using Spring
+ * Used for creating initial data when building up the application
+ *
+ * @author RC
+ * @version 1.0
  */
 @Component
 public class DatabaseLoader implements ApplicationRunner {
@@ -25,8 +29,8 @@ public class DatabaseLoader implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments applicationArguments) throws Exception {
-		Exam exam = new Exam("Proefexamen", "Piet", 60);
-		exam.addQuestion(new Question("What is your name", Question.QuestionType.OPEN));
-		examRepository.save(exam);
+//		Exam exam = new Exam("Proefexamen", "Piet", 60);
+//		exam.addQuestion(new Question("What is your name", Question.QuestionType.OPEN));
+//		examRepository.save(exam);
 	}
 }

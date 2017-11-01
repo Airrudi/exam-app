@@ -1,12 +1,15 @@
 package com.rc.examapp.question;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rc.examapp.core.BaseEntity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * Created by R.E.M. Claassen on 27-10-2017.
+ * Created by RC on 27-10-2017.
  */
 
 @Entity
@@ -15,7 +18,9 @@ public class Answer extends BaseEntity{
 	private String text;
 	private boolean correct;
 
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@JoinColumn(name = "question_id")
+	@JsonIgnore
 	private Question question;
 
 	protected Answer() {
