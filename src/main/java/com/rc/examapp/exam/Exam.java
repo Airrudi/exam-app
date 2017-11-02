@@ -1,16 +1,16 @@
 package com.rc.examapp.exam;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rc.examapp.core.BaseEntity;
 import com.rc.examapp.question.Answer;
 import com.rc.examapp.question.Question;
+import com.rc.examapp.user.User;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,10 @@ import java.util.List;
 public class Exam extends BaseEntity{
 
 	private String title;
-	private String owner;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User owner;
 	private LocalDateTime createdOn;
 	private int passingPercentage;
 
@@ -45,7 +48,7 @@ public class Exam extends BaseEntity{
 		this.createdOn = LocalDateTime.now();
 	}
 
-	public Exam(String title, String owner, int passingPercentage) {
+	public Exam(String title, User owner, int passingPercentage) {
 		this();
 		this.title = title;
 		this.owner = owner;
@@ -60,11 +63,11 @@ public class Exam extends BaseEntity{
 		this.title = title;
 	}
 
-	public String getOwner() {
+	public User getOwner() {
 		return owner;
 	}
 
-	public void setOwner(String owner) {
+	public void setOwner(User owner) {
 		this.owner = owner;
 	}
 
@@ -89,7 +92,11 @@ public class Exam extends BaseEntity{
 	}
 
 	public void addQuestion(Question question) {
-		question.addExam(this);
 		this.questions.add(question);
+		//question.addExam(this); // Exam already is owning side of relation
+	}
+
+	public void removeQuestion(Question question){
+		this.questions.remove(question);
 	}
 }

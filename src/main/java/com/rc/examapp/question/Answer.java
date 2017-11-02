@@ -15,8 +15,11 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Answer extends BaseEntity{
 
+	// TODO: Assumption: A correct answer has a minimum score of 1, an incorrect answer has the score of 0
+
 	private String text;
-	private boolean correct;
+	private int score;
+	private boolean isCorrect;
 
 	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name = "question_id")
@@ -27,11 +30,26 @@ public class Answer extends BaseEntity{
 		super();
 	}
 
-	public Answer(String text, boolean correct) {
+	public Answer(String text){
 		this();
 		this.text = text;
-		this.correct = correct;
 	}
+
+	public Answer(String text, boolean isCorrect, int score) {
+		this(text);
+		this.isCorrect = isCorrect;
+		this.score = score;
+	}
+
+	public Answer(String text, boolean isCorrect) {
+		this(text, isCorrect, isCorrect ? 1 : 0);
+	}
+
+	public Answer(String text, int score) {
+		this(text, score > 0 ? true : false, score);
+	}
+
+
 
 	public String getText() {
 		return text;
@@ -41,19 +59,32 @@ public class Answer extends BaseEntity{
 		this.text = text;
 	}
 
-	public boolean isCorrect() {
-		return correct;
-	}
-
-	public void setCorrect(boolean correct) {
-		this.correct = correct;
-	}
-
 	public Question getQuestion() {
 		return question;
 	}
 
 	public void setQuestion(Question question) {
 		this.question = question;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public boolean isCorrect() {
+		return isCorrect;
+	}
+
+	public void setCorrect(boolean isCorrect) {
+		this.isCorrect = isCorrect;
+	}
+
+	@Override
+	public String toString() {
+		return "Answer is: " + text;
 	}
 }

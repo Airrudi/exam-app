@@ -4,19 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rc.examapp.core.BaseEntity;
 import com.rc.examapp.exam.Exam;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Question class contains the text and a list of possible answers in case of multiple choice questions
@@ -35,6 +30,7 @@ public class Question extends BaseEntity {
 	public enum QuestionType{
 		MULTIPLE, OPEN;
 	}
+
 
 	private String text;
 
@@ -89,6 +85,9 @@ public class Question extends BaseEntity {
 		answer.setQuestion(this);
 	};
 
+	public void removeAnswer(Answer answer){
+		this.answers.remove(answer);
+	}
 
 	public List<Exam> getExams() {
 		return exams;
